@@ -11,7 +11,7 @@ for the bot as turns progress.
 
 ## Method / Components
 Basic game interface and infrastructure are built with pygame.
-Due to the random nature of the "pedestrian" agents, the bot uses model-based reinforcement learning ~~and Hidden Markov models~~
+Due to the random nature of the "pedestrian" agents, the bot uses model-free reinforcement learning (Q-Learning) ~~and Hidden Markov models~~
 to find the optimal path.
 
 ## Team
