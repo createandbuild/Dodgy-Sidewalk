@@ -1,13 +1,12 @@
 # Dodgy Sidewalk
----
 Final project for AI course at SPCS.
 
 ## Description
-A bot that can optimally dodge “pedestrians” coming in from random positions
-on the top and bottom of the screen; these pedestrians then move in random cartesian (NSEW) directions
-(i.e. the bot has to navigate optimally through these walkers. If the bot hits a pedestrian, the “game” ends.
-After certain time periods, the speed of the pedestrians will increase and how often they turn also increases.
-More pedestrians will also begin to appear as time goes on. A score counter will gradually increase as time progresses.
+A bot that optimally dodges "pedestrian" agents by finding an optimal path through them. The "pedestrian" agents
+enter the game screen from the top and bottom and move in random (NSEW) directions. The program ends once the bot
+cannot find a path (i.e. trapped) and cannot dodge a "pedestrian." After certain turns of moves, the speed and randomness
+of the agents' motion will increase, making it harder for the bot to navigate through them. A score counter will add points/rewards
+for the bot as turns progress.
 
 ## Method / Components
 Basic game interface and infrastructure are built with pygame.
