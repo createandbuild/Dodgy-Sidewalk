@@ -14,5 +14,5 @@ Basic game interface and infrastructure are built with pygame.
 Due to the random nature of the "pedestrian" agents, the bot uses model-based reinforcement learning ~~and Hidden Markov models~~
 to find the optimal path.
 
-## Authors
+## Team
 Anthony Kim, Jedd Hui, Amy Dong
