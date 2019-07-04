@@ -1,5 +1,6 @@
 # Dodgy Sidewalk
 Final project for AI course at SPCS.
+Pretty dodgy.
 
 ## Description
 A bot that optimally dodges "pedestrian" agents by finding an optimal path through them. The "pedestrian" agents
