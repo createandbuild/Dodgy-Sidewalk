@@ -124,7 +124,7 @@ def main():
 
           playerTurn = False
           playerCounter = playerCounter + 1
-          if (playerCounter % 3) == 0:
+          if (playerCounter % 5) == 0:
               pedestrianAmt = pedestrianAmt + 1
               addPedestrian()
               pedestrianCounter = pedestrianCounter + 1

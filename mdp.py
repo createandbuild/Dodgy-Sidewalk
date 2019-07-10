@@ -1,23 +1,3 @@
-"""
-states: [agent_type, bot_x, bot_y, pedestrian_x, pedestrian_y]
-    agent_type: {-1: pedestrian, +1: bot}
-    bot_x: [0, 25, 50, 75, 100, 125, 150, 175, 200]
-    bot_y: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300]
-    
-    sparse matrix of the bot and pedestrians' location within the board
-
-actions: 
-    up
-    down
-    left
-    right
-    
-agent_type:
-    +1: bot
-    -1: pedestrian
-
-"""
-
 # def getTransition(state, actionX, actionY):
 #     output_state = []
 #     bot_x = state[1]
@@ -39,17 +19,6 @@ import numpy
 from pygame.constants import K_DOWN, K_UP, KEYDOWN, KEYUP, QUIT
 import pygame.surfarray
 import pygame.key
-
-#
-# def reward():
-#     from game import playerCounter
-#     return playerCounter
-#
-# def action():
-#     return playerDirection[-1]
-#
-# def state():
-
 
 def getAction(incterceptFunc, receiveFunc):
     """
@@ -73,7 +42,7 @@ def getAction(incterceptFunc, receiveFunc):
 
     return wrap
 
-class PyGamePlayer(object):
+class gameBot(object):
     def __init__(self, force_game_fps=2, run_real_time=False, pass_quit_event=True):
         """
         Abstract class for learning agents.
