@@ -10,6 +10,13 @@ TEXTCOLOR = (0, 0, 0)
 display_width = 200
 display_height = 300
 
-QIDic = {}  # dictionary for the q-table
+pedestrianX = 150
+pedestrianY = 0
+
+possibleAct = [2, -2, 1, -1]    # up, down, right, left
+pedestrianAct = np.random.choice(possibleAct, 1, p=[0.1, 0.7, 0.1, 0.1])
+
+
+QIDic = {}  # dictionary (index) for the q-table
 
 Q = np.zeros([768, 3])  # q-table to store state-action pair

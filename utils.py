@@ -38,7 +38,7 @@ def transition(state, action):
         botX = state.botX
         botY = state.botY
 
-    allPedestrianPos = []
+    allPedestrianPos = []   #add in random action for pedestrians
     for key in getPedestrianLocations():
         allPedestrianPos.append(getPedestrianLocations()[key])
 
@@ -82,17 +82,6 @@ def newBotPos(bot, action):
 
 
 '''
-defines where the new pedestrian will be spawned
-'''
-
-#not sure if this works with our game file
-
-def newPedestrianX():
-    newX = int(random.randint(1, 9) * (display_width/8))
-    return newX
-
-
-'''
 calculates the reward based of collision of pedestrian and bot
 '''
 
@@ -103,7 +92,7 @@ def getReward(bot, pedestrian):
 
     for pedestrian in range(len(pedestrianPos)):
         if botPos == pedestrian:    # -1 penalty for collision
-            return -1   # set to -100?
+            return -1
     return 1    # +1 reward for survival
 
 
