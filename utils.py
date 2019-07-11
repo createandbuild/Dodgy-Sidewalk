@@ -42,7 +42,7 @@ def transition(state, action):
     for key in getPedestrianLocations():
         allPedestrianPos.append(getPedestrianLocations()[key])
 
-    botPos = Bot(botX, botY)
+    botPos = Player(botX, botY)
     pedestrianPos = Pedestrian(allPedestrianPos)
 
     return State(botPos, pedestrianPos)

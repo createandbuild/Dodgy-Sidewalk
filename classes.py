@@ -1,4 +1,4 @@
-class Bot:
+class Player:
     def __init__(self, botX, botY):
         self.botX = botX
         self.botY = botY

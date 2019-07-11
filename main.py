@@ -7,8 +7,9 @@ function is being called, which I don't know because I don't fully understand th
 
 import sys
 import pygame
-import random
 from utils import *
+
+# pygame.init()
 
 running = True
 botTurn = True
@@ -16,8 +17,7 @@ botTurn = True
 action = -2     # bot initially moves downwards to avoid upward swarm of pedestrians
 
 pedestrianAmt = 0   # amount of pedestrians created
-playerCounter = 0   # score for bot (based on how many turns it survived for)
-pedestrianCounter = 0   # what is this for?
+pedestrianCounter = 0   # what is this for? #'if it aint broke'
 
 score = 0
 penalty = 0
@@ -88,12 +88,16 @@ def getPedestrianLocations():
 addPedestrian() # why is this called here?
 
 def main():
-  global running, screen, startingPlayerWidth, startingPlayerHeight, startingPedestrianWidth, startingPedestrianHeight, botTurn, pedestrianAmt, playerCounter, pedestrianCounter
+  global running, screen, startingPlayerWidth, startingPlayerHeight, startingPedestrianWidth, startingPedestrianHeight, botTurn, pedestrianAmt, pedestrianCounter, episode
 
   pygame.init()
 
   screen = pygame.display.set_mode((display_width, display_height))
   pygame.display.set_caption("Dodgy Sidewalk")
+
+  # coordinate of the center of the game screen (starting position of bot)
+  startingPlayerWidth = int(display_width/2)+1
+  startingPlayerHeight = int(display_height/2)+1
 
   drawGrid()
   drawPlayer()
@@ -101,11 +105,7 @@ def main():
 
   pygame.display.update()
 
-  # coordinate of the center of the game screen (starting position of bot)
-  startingPlayerWidth = int(display_width/2)+1
-  startingPlayerHeight = int(display_height/2)+1
-
-while running:
+  while running:
     ev = pygame.event.get()
     for event in ev:
         if event.type == pygame.QUIT:
@@ -117,7 +117,9 @@ while running:
 
     collision = False
     botPos = [startingPlayerWidth, startingPlayerHeight]
-    pedestrianPos = transition.allPedestrianPos
+    pedestrianPos = []
+    for key in getPedestrianLocations():
+        pedestrianPos.append(getPedestrianLocations()[key])
     for pedestrian in range(len(pedestrianPos)):
         if botPos == pedestrian:
             collision = True
@@ -132,12 +134,12 @@ while running:
         reward = 0
         if (episode % 5) == 0:
             addPedestrian()
-        # change pedestrian's position (get random action)
 
-    state = State(Bot(startingPlayerWidth, startingPlayerHeight), Pedestrian([pedestrianX, pedestrianY]))
+
+    state = State(Player(startingPlayerWidth, startingPlayerHeight), Pedestrian([pedestrianX, pedestrianY]))
     act = optimalAction(state)      # get the best action so far in the game
     r0 = getReward(state.bot, state.pedestrian)     # get immediate rewards of this step
-    nextState = transition(state, act)  # new state after taking optimal action
+    nextState = transition(state, act, getPedestrianLocations)  # new state after taking optimal action
     Q[stateEncoder(state), act] += alpha * (r0 + gamma * np.max(Q[stateEncoder(nextState), :]) - Q[stateEncoder(state), act])   # build the Q-table, index by (state, action) pair
 
     Bot = newBotPos(state.Bot, act)
@@ -236,3 +238,5 @@ while running:
     #     botTurn = True
     #     # print(getPedestrianLocations())
     #     # print(getPedestrianLocations()[0][1])
+
+main()
