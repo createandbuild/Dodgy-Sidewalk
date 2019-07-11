@@ -1,8 +1,5 @@
-from utility import *
-from game import *
-
-pygame.display.update = combineFunc(pygame.display.update, on_screen_update)
-
+from main import *
 
 if __name__ == '__main__':
   main()
+

@@ -4,9 +4,8 @@ class Bot:
         self.botY = botY
 
 class Pedestrian:
-    def __init__(self, pedestrianX, pedestrianY):
-        self.pedestrianX = pedestrianX
-        self.pedestrianY = pedestrianY
+    def __init__(self, pedestrianList):
+        self.pedestrianList = pedestrianList
 
 class State:
     def __init__(self, bot, pedestrian):

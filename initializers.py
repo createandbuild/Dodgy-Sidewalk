@@ -10,19 +10,6 @@ TEXTCOLOR = (0, 0, 0)
 display_width = 200
 display_height = 300
 
-# specify circle properties
-# crclCentreX = 400
-# crclCentreY = 50
-# crclRadius = 20
-#
-# crclYStepFalling = windowHeight / 10  # 40 pixels each time
-#
-# # specify rectangle properties
-# rctLeft = 400
-# rctTop = 350
-# rctWidth = 200
-# rctHeight = 50
-
-QIDic = {}  # dictionary for index of the q-table
+QIDic = {}  # dictionary for the q-table
 
 Q = np.zeros([768, 3])  # q-table to store state-action pair

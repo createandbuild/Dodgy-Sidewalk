@@ -2,11 +2,10 @@ import random
 import pygame as pg
 from initializers import *
 from classes import *
+from main import getPedestrianLocations
 
 '''
-a new state simply means the changed position of the
-rectangle and the circle. the rectangle would move according
-to the optimal action, the circle falls freely.
+returns the new state with new positions of the player bot and the pedestrians
 '''
 
 
@@ -39,59 +38,73 @@ def transition(state, action):
         botX = state.botX
         botY = state.botY
 
-    botPos = Bot(botX, botY)
-    pedestrianPos = Pedestrian()
+    allPedestrianPos = []
+    for key in getPedestrianLocations():
+        allPedestrianPos.append(getPedestrianLocations()[key])
 
+    botPos = Bot(botX, botY)
+    pedestrianPos = Pedestrian(allPedestrianPos)
 
     return State(botPos, pedestrianPos)
 
 
 '''
-almost similar to a new state, separating because of some easiness
+returns new position of the player bot
 '''
 
-
-def new_rect_after_action(rect, act):
-    if act == 2:  # 0 == left, 1 == right
-        if rect.right + rect.width > windowWidth:
-            return rect
+def newBotPos(bot, action):
+    if action == 1:
+        if bot.botX >= 195:
+            return bot
         else:
-            return pg.Rect(rect.left + rect.width, rect.top, rect.width,
-                           rect.height)  # Rect(left, top, width, height)
-    elif act == 1:  # action is left
-        if rect.left - rect.width < 0:
-            return rect
+            bot.botX += 25
+            return bot
+    elif action == -1:
+        if bot.botX <= 5:
+            return bot
         else:
-            return pg.Rect(rect.left - rect.width, rect.top, rect.width,
-                           rect.height)  # Rect(left, top, width, height)
-    else:  # action if to stay
-        return rect
-
-
-'''
-defines where the starting x position of the circle
-should be while falling.
-'''
-
-
-def circle_falling(crclradius):
-    newx = 100 - crclRadius
-    multiplier = random.randint(1, 8)  # make more channel by making it a floating point number
-    newx *= multiplier
-    return newx
-
-
-'''
-calculate the score based on the relative position of the
-circle and the rectangle.
-'''
-
-
-def calculate_score(rect, circle):
-    if rect.left <= circle.circleX <= rect.right:  # if the circle'x x position is between the rectangles left and right
-        return 1
+            bot.botX -= 25
+            return bot
+    elif action == 2:
+        if bot.botY <= 5:
+            return bot
+        else:
+            bot.botY += 25
+            return bot
+    elif action == -2:
+        if bot.botY >= 295:
+            return bot
+        else:
+            bot.botY -= 25
+            return bot
     else:
-        return -1
+        return bot
+
+
+'''
+defines where the new pedestrian will be spawned
+'''
+
+#not sure if this works with our game file
+
+def newPedestrianX():
+    newX = int(random.randint(1, 9) * (display_width/8))
+    return newX
+
+
+'''
+calculates the reward based of collision of pedestrian and bot
+'''
+
+
+def getReward(bot, pedestrian):
+    botPos = [(bot.botX, bot.botY)]
+    pedestrianPos = pedestrian.pedestrianList
+
+    for pedestrian in range(len(pedestrianPos)):
+        if botPos == pedestrian:    # -1 penalty for collision
+            return -1   # set to -100?
+    return 1    # +1 reward for survival
 
 
 '''
@@ -103,10 +116,16 @@ indices.
 '''
 
 
-def state_to_number(s):
-    r = s.rect.left
-    c = s.circle.circleY
-    n = float(str(r) + str(c) + str(s.circle.circleX))
+def stateEncoder(state):
+    b_x = state.bot.botX
+    b_y = state.bot.botY
+    p = state.pedestrian
+    sum_pedestrian = 0
+    for i in range(len(p)):
+        if 0 <= i[0] <= 200 and 0 <= i[1] <= 300:
+            sum_pedestrian = sum_pedestrian + i[0] + i[1]
+
+    n = int(str(b_x) + str(b_y) + str(sum_pedestrian))  # unique identifier: sum of x,y coordinates of bot and all pedestrians (that are within the board)
 
     if n in QIDic:
         return QIDic[n]
@@ -119,5 +138,5 @@ def state_to_number(s):
     return QIDic[n]
 
 
-def get_best_action(s):
-    return np.argmax(Q[state_to_number(s), :])
+def optimalAction(state):
+    return np.argmax(Q[stateEncoder(state), :])
